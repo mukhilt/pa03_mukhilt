@@ -1,5 +1,6 @@
 // includes
 #include "NeuralNetwork.hpp"
+#include <algorithm>
 #include "Trace.hpp"
 using namespace std;
 
@@ -77,7 +78,7 @@ vector<double> NeuralNetwork::predict(DataInstance instance) {
     while (!q.empty()) {
         int value = q.front();
         q.pop();
-        if (find(inputNodeIds.begin(), inputNodeIds.end(), value) == inputNodeIds.end()) {
+        if (std::find(inputNodeIds.begin(), inputNodeIds.end(), value) == inputNodeIds.end()) {
             visitPredictNode(value);
         }
         for (auto& vals:adjacencyList[value]) {
@@ -154,7 +155,7 @@ double NeuralNetwork::contribute(int nodeId, const double& y, const double& p) {
         visitContributeNeighbor(conn, incomingContribution, outgoingContribution);
     }
 
-    if (find(inputNodeIds.begin(), inputNodeIds.end(), nodeId) == inputNodeIds.end()) {
+    if (std::find(inputNodeIds.begin(), inputNodeIds.end(), nodeId) == inputNodeIds.end()) {
         visitContributeNode(nodeId, outgoingContribution);
     }
     // Before returning, store outgoingContribution in the contributions map.
